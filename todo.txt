@@ -1,10 +1,11 @@
 UI Improvements
 ---
-Add something to indicate to user if we're paused or running
-Allow user to adjust FPS
+Add a monitoring panel for generation number, paused/running, population info
+Consider dynamic block sizing, fullscreen options
 
 New Functionality
 ----
+Allow user to adjust FPS
 Abstract rules list to allow for different rules sets
 Add argv parsing for parameters
 Allow user to zoom
