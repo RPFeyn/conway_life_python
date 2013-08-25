@@ -3,10 +3,9 @@ import pygame,sys
 import conway_backend
 from pygame.locals import*
 
-glider = [(0,0),(1,0),(0,1),(2,1),(0,2)]
 conway_backend.gameinit(50)
 
-FPS = 10
+FPS = 20
 WINDOWWIDTH=800
 WINDOWHEIGHT=640
 GAPSIZE = 1
