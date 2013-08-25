@@ -68,32 +68,34 @@ def advance() :
     global _board
     _board = iterate(_board)
 
-
-def display() :
-    global _board
-    global _boardsize
-    grid = [[False for x in range(_boardsize)] for y in range(_boardsize)]
-    for alive in _board :
-        x=alive[0]
-        y=alive[1]
-        grid[x][y] = True
-    hdivide = '-' * (_boardsize+2)
-    print(hdivide)
-    for row in grid :
-        print('|',end='')
-        for pt in row :
-            if pt :
-                print('O',end='')
-            else :
-                print(' ',end='')
-        print('|')
-    print(hdivide)
-    tmp=input('Enter to continue')
-
+'''
 if __name__=="__main__" :
+    def display() :
+        global _board
+        global _boardsize
+        grid = [[False for x in range(_boardsize)] for y in range(_boardsize)]
+        for alive in _board :
+            x=alive[0]
+            y=alive[1]
+            grid[x][y] = True
+        hdivide = '-' * (_boardsize+2)
+        print(hdivide)
+        for row in grid :
+            print('|',end='')
+            for pt in row :
+                if pt :
+                    print('O',end='')
+                else :
+                    print(' ',end='')
+            print('|')
+        print(hdivide)
+        tmp=input('Enter to continue')
+
+
     glider = [(0,0),(1,0),(0,1),(2,1),(0,2)]
     gameinit(30,glider)
     while len(_board) > 0 :
         advance()
         display()
+        '''
 
