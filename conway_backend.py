@@ -3,16 +3,40 @@ from copy import deepcopy
 _board=set()
 _boardsize = 0
 
-def gameinit(sz, alive=[]) :
+
+def add(pt) :
+    _board.add(pt)
+
+
+def remove(pt) :
+    _board.discard(pt)
+
+
+def gameinit(sz) :
     global _boardsize
     global _board
     _boardsize=sz
-    for x in alive : 
-        _board.add(x)
+
+
+def is_empty():
+    return len(_board) == 0
+
+def clear_board() :
+    _board.clear()
+
+
+def invert(pt):
+    global _board
+    if not is_valid(pt,_boardsize) :
+        raise IndexError('Bad point used in invert(pt)')
+    if pt in _board :
+        _board.remove(pt)
+    else :
+        _board.add(pt)
+
 
 def _neighbors(size,pt) :
     if not is_valid(pt,size) :
-        print(pt,size)
         raise IndexError('Bad point called in _neighbors(size,pt)')
     yield ((pt[0]+1) % size, (pt[1]-1) % size)
     yield ((pt[0]+1) % size, (pt[1]  ) % size)
@@ -67,35 +91,4 @@ def iterate(board) :
 def advance() :
     global _board
     _board = iterate(_board)
-
-'''
-if __name__=="__main__" :
-    def display() :
-        global _board
-        global _boardsize
-        grid = [[False for x in range(_boardsize)] for y in range(_boardsize)]
-        for alive in _board :
-            x=alive[0]
-            y=alive[1]
-            grid[x][y] = True
-        hdivide = '-' * (_boardsize+2)
-        print(hdivide)
-        for row in grid :
-            print('|',end='')
-            for pt in row :
-                if pt :
-                    print('O',end='')
-                else :
-                    print(' ',end='')
-            print('|')
-        print(hdivide)
-        tmp=input('Enter to continue')
-
-
-    glider = [(0,0),(1,0),(0,1),(2,1),(0,2)]
-    gameinit(30,glider)
-    while len(_board) > 0 :
-        advance()
-        display()
-        '''
 

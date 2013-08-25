@@ -1,6 +1,6 @@
-Allow user to set starting conditions
-Give user start/stop options
 Allow user to adjust FPS
 Allow user to zoom
 Allow user to select from predefined library of start conditions
 Improve backend speed
+More consistent naming in code (really bad!)
+Re-examine button listing scheme
