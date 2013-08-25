@@ -44,7 +44,7 @@ BUTTON_LIST = [ (' Start ',start_action),
                 (' Reset ',reset_action)
               ]
 BUTTON_ACTIONS = {} #dict to lookup actions, filled from BUTTON_LIST
-BUTTONS=[] #[(name,surfaceobj,rectobj)] list of tuples filled in button_setup from BUTTON_NAMES
+BUTTONS=[] #[(name,surfaceobj,rectobj)] list of tuples filled in button_setup from BUTTON_LIST
 
 
 def button_setup() :
