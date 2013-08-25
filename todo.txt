@@ -1,12 +1,26 @@
+UI Improvements
+---
 Add something to indicate to user if we're paused or running
-Add sanity checks to board dimensions
-Add argv parsing for parameters
 Allow user to adjust FPS
+
+New Functionality
+----
+Abstract rules list to allow for different rules sets
+Add argv parsing for parameters
 Allow user to zoom
 Allow user to resize on the fly
 Allow user to select from predefined library of start conditions
-Improve backend speed
+
+
+Code style/encapsulation
+----
+Add sanity checks to board dimensions
 More consistent naming in code (really bad!)
-Re-examine button listing scheme
 kill lots of globals (especially referencing _board in conway.py)
-Abstract rules list to allow for different rules sets
+Re-examine button listing scheme
+
+
+Performance/Optimizations
+----
+Do some profiling, especially on backend
+
