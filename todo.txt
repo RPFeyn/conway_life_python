@@ -7,3 +7,4 @@ More consistent naming in code (really bad!)
 Re-examine button listing scheme
 kill lots of globals (especially referencing _board in conway.py)
 
+Abstract rules list to allow for different rules sets
