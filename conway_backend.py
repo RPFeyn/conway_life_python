@@ -21,9 +21,13 @@ def gameinit(sz) :
 def is_empty():
     return len(_board) == 0
 
+
 def clear_board() :
     _board.clear()
 
+
+def get_board() :
+    return _board
 
 def invert(pt):
     global _board
@@ -74,6 +78,7 @@ def count_neigh_update_dead(dead_cands,pt) :
     return alive_neighbors
 
 def iterate(board) :
+    #TODO: Some magic numbers here
     newboard = deepcopy(board)
     dead_cands = set() #Candidate cells for reproduction
     for alivept in _board :

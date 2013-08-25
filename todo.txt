@@ -16,8 +16,7 @@ Allow user to select from predefined library of start conditions
 Code style/encapsulation
 ----
 Add sanity checks to board dimensions
-More consistent naming in code (really bad!)
-kill lots of globals (especially referencing _board in conway.py)
+kill globals
 Re-examine button listing scheme
 
 

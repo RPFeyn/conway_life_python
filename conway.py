@@ -2,20 +2,20 @@
 import pygame,sys
 import conway_backend
 from pygame.locals import*
-GRIDSIZE = 100
-conway_backend.gameinit(GRIDSIZE)
 
-FPS = 20
+GRIDSIZE = 60
+
+FPS = 15
 WINDOWWIDTH=1400
 WINDOWHEIGHT=840
 GAPSIZE = 1
 BOARDWIDTH = GRIDSIZE
 BOARDHEIGHT = GRIDSIZE
 
-CONTROLHEIGHT = 30 #Height of control button UI
+CONTROLHEIGHT = 25 #Height of control button UI
 BUTTONGAP = 8
-BOXWIDTH = 7
-BOXHEIGHT = 7
+BOXWIDTH = 10
+BOXHEIGHT = 10
 XMARGIN = (WINDOWWIDTH - BOXWIDTH*BOARDWIDTH - (GAPSIZE * (BOARDWIDTH-1))) // 2
 YMARGIN = (WINDOWHEIGHT - CONTROLHEIGHT - BOXHEIGHT*BOARDHEIGHT - (GAPSIZE * (BOARDHEIGHT-1))) // 2
 
@@ -39,19 +39,22 @@ def reset_action() :
     PAUSED = True
     conway_backend.clear_board()
 
+#Defined BUTTON_LIST so that UI would be presented predictably, instead of just using
+#BUTTON_ACTIONS dict
 BUTTON_LIST = [ (' Start ',start_action),
                 (' Stop ',stop_action),
                 (' Reset ',reset_action)
               ]
 BUTTON_ACTIONS = {} #dict to lookup actions, filled from BUTTON_LIST
 BUTTONS=[] #[(name,surfaceobj,rectobj)] list of tuples filled in button_setup from BUTTON_LIST
+           #Used to hold buttons graphics data
 
 
 def button_setup() :
     global BUTTONS,BUTTON_ACTIONS,BUTTON_LIST
     i=0
     lastwidth=0
-    startx = left_top_coords(0,0)[0]
+    startx = left_top_coords(0,0)[0] #only left coords
     fontObj = pygame.font.Font('freesansbold.ttf',18)
     for n in BUTTON_LIST:
         name=n[0]
@@ -68,7 +71,7 @@ def button_setup() :
 def draw_all(board) :
     global BUTTONS
     DISPLAYSURF.fill(BGCOLOR)
-    drawBoard(board)
+    draw_board(board)
     for b in BUTTONS:
         DISPLAYSURF.blit(b[1],b[2]) #b[1]: surface obj, b[2]: rect obj
     pygame.display.update()
@@ -76,13 +79,14 @@ def draw_all(board) :
 
 def main():
     #init pygame
-    global FPSCLOCK, DISPLAYSURF,PAUSED
+    global FPSCLOCK, DISPLAYSURF, PAUSED
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH,WINDOWHEIGHT))
     pygame.display.set_caption("Conway's Game of Life")
     button_setup()
     (mousex,mousey) = (0,0)
+    conway_backend.gameinit(GRIDSIZE)
 
     while True :
         if not PAUSED :
@@ -102,25 +106,25 @@ def main():
 
 
 def dispatch_click(mousex,mousey) :
-    (boxx,boxy) = getBoxAtPixel(mousex,mousey)
-    if boxx !=None and boxy !=None :
-        conway_backend.invert((boxx,boxy))
+    (gridx,gridy) = get_box_at_pixel(mousex,mousey)
+    if gridx !=None and gridy !=None :
+        conway_backend.invert((gridx,gridy))
         return
 
-    button = getButtonAtPixel(mousex,mousey)
+    button = get_button_at_pixel(mousex,mousey)
     if button != None :
         name = button[0]
         BUTTON_ACTIONS[name]()
 
 
-def left_top_coords(boxx,boxy) :
+def left_top_coords(gridx,gridy) :
     #Converts grid coordinates to pixel coordinates
-    left = boxx * (BOXWIDTH+GAPSIZE) + XMARGIN
-    top  = boxy * (BOXHEIGHT+GAPSIZE) + YMARGIN + CONTROLHEIGHT + GAPSIZE
+    left = gridx * (BOXWIDTH+GAPSIZE) + XMARGIN
+    top  = gridy * (BOXHEIGHT+GAPSIZE) + YMARGIN + CONTROLHEIGHT + GAPSIZE
     return (left,top)
 
 
-def getButtonAtPixel(x,y) :
+def get_button_at_pixel(x,y) :
     global BUTTONS #list of (name,surfobj,rectobj) tuples
     for b in BUTTONS:
         button_rect = b[2]
@@ -128,46 +132,23 @@ def getButtonAtPixel(x,y) :
             return b
     return None
 
-def getBoxAtPixel(x,y) :
-    for boxx in range(BOARDWIDTH) :
-        for boxy in range(BOARDHEIGHT) :
-            left,top = left_top_coords(boxx,boxy)
-            boxRect = pygame.Rect(left,top,BOXWIDTH,BOXHEIGHT)
-            if boxRect.collidepoint(x,y) :
-                return (boxx,boxy)
+def get_box_at_pixel(x,y) :
+    for gridx in range(BOARDWIDTH) :
+        for gridy in range(BOARDHEIGHT) :
+            left,top = left_top_coords(gridx,gridy)
+            box_rect = pygame.Rect(left,top,BOXWIDTH,BOXHEIGHT)
+            if box_rect.collidepoint(x,y) :
+                return (gridx,gridy)
     return (None,None)
 
 
-def drawBoard(board) :
-    for boxx in range(BOARDWIDTH) :
-        for boxy in range(BOARDHEIGHT) :
-            (left,top) = left_top_coords(boxx,boxy)
-            currcolor = ALIVECOLOR if (boxx,boxy) in board else DEADCOLOR
+def draw_board(board) :
+    for gridx in range(BOARDWIDTH) :
+        for gridy in range(BOARDHEIGHT) :
+            (left,top) = left_top_coords(gridx,gridy)
+            currcolor = ALIVECOLOR if (gridx,gridy) in board else DEADCOLOR
             pygame.draw.rect(DISPLAYSURF, currcolor, (left,top,BOXWIDTH,BOXHEIGHT))
 
 
 if __name__=="__main__" :
     main()
-
-'''
-def debugprint():
-    print "-- Backend --" 
-    print "backend._boardsize",conway_backend._boardsize 
-    print "backend._board",conway_backend._board 
-    print "-- Graphics --" 
-    print "FPS:",FPS 
-    print "WINDOWWIDTH:",WINDOWWIDTH 
-    print "WINDOWHEIGHT:",WINDOWHEIGHT 
-    #print "BOXSIZE:",BOXSIZE 
-    print "BOXWIDTH:",BOXWIDTH
-    print "BOXHEIGHT:",BOXHEIGHT
-    print "GAPSIZE:",GAPSIZE 
-    print "BOARDWIDTH:",BOARDWIDTH 
-    print "BOARDHEIGHT:",BOARDHEIGHT 
-    print "XMARGIN:",XMARGIN 
-    print "YMARGIN:",YMARGIN 
-    print "ALIVECOLOR:",ALIVECOLOR 
-    print "DEADCOLOR:",DEADCOLOR 
-    print "BGCOLOR:",BGCOLOR 
-'''
-
