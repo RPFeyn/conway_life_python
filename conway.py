@@ -1,4 +1,4 @@
-import copy
+from copy import deepcopy
 #Points denoted by tuples, board represented by a set
 _board=set()
 _boardsize = 0
@@ -50,7 +50,7 @@ def count_neigh_update_dead(dead_cands,pt) :
     return alive_neighbors
 
 def iterate(board) :
-    newboard = copy.deepcopy(board)
+    newboard = deepcopy(board)
     dead_cands = set() #Candidate cells for reproduction
     for alivept in _board :
         alive_neighbors = count_neigh_update_dead(dead_cands,alivept)
