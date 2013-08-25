@@ -24,3 +24,9 @@ Performance/Optimizations
 ----
 Do some profiling, especially on backend
 
+
+Documentation
+----
+readme: write it up, include prereqs
+docstrings: all of them.
+
