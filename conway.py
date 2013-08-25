@@ -2,20 +2,20 @@
 import pygame,sys
 import conway_backend
 from pygame.locals import*
-
-conway_backend.gameinit(50)
+GRIDSIZE = 100
+conway_backend.gameinit(GRIDSIZE)
 
 FPS = 20
-WINDOWWIDTH=800
-WINDOWHEIGHT=640
+WINDOWWIDTH=1400
+WINDOWHEIGHT=840
 GAPSIZE = 1
-BOARDWIDTH = conway_backend._boardsize
-BOARDHEIGHT = BOARDWIDTH
+BOARDWIDTH = GRIDSIZE
+BOARDHEIGHT = GRIDSIZE
 
 CONTROLHEIGHT = 30 #Height of control button UI
-BUTTONGAP = 10
-BOXWIDTH = 12
-BOXHEIGHT = 10
+BUTTONGAP = 8
+BOXWIDTH = 7
+BOXHEIGHT = 7
 XMARGIN = (WINDOWWIDTH - BOXWIDTH*BOARDWIDTH - (GAPSIZE * (BOARDWIDTH-1))) // 2
 YMARGIN = (WINDOWHEIGHT - CONTROLHEIGHT - BOXHEIGHT*BOARDHEIGHT - (GAPSIZE * (BOARDHEIGHT-1))) // 2
 
@@ -111,8 +111,6 @@ def dispatch_click(mousex,mousey) :
     if button != None :
         name = button[0]
         BUTTON_ACTIONS[name]()
-    return #or maybe we just clicked nowhere
-
 
 
 def left_top_coords(boxx,boxy) :
@@ -132,7 +130,7 @@ def getButtonAtPixel(x,y) :
 
 def getBoxAtPixel(x,y) :
     for boxx in range(BOARDWIDTH) :
-        for boxy in range(BOARDWIDTH) :
+        for boxy in range(BOARDHEIGHT) :
             left,top = left_top_coords(boxx,boxy)
             boxRect = pygame.Rect(left,top,BOXWIDTH,BOXHEIGHT)
             if boxRect.collidepoint(x,y) :
