@@ -3,18 +3,18 @@ from copy import deepcopy
 _board=set()
 _boardsize = 0
 
-
 def add(pt) :
+    '''Adds a live point to the board. pt expected to be represented as a 2-tuple'''
     _board.add(pt)
 
-
 def remove(pt) :
+    '''Removes a live point from the board. pt expected to be represented as a 2-tuple'''
     _board.discard(pt)
 
 
 def gameinit(sz) :
+    '''Simple size setter: May be changed to initialize starting live cells'''
     global _boardsize
-    global _board
     _boardsize=sz
 
 
@@ -26,10 +26,13 @@ def clear_board() :
     _board.clear()
 
 
-def get_board() :
-    return _board
+'''def get_board() :
+    return _board'''
+
 
 def invert(pt):
+    '''Kills a cell if it is alive, or adds a cell to the live list if it's dead.
+    Helper function useful for handling user clicks.'''
     global _board
     if not is_valid(pt,_boardsize) :
         raise IndexError('Bad point used in invert(pt)')
@@ -40,6 +43,7 @@ def invert(pt):
 
 
 def _neighbors(size,pt) :
+    '''Generator for getting neighbors of a point, whether alive or dead'''
     if not is_valid(pt,size) :
         raise IndexError('Bad point called in _neighbors(size,pt)')
     yield ((pt[0]+1) % size, (pt[1]-1) % size)
@@ -53,6 +57,7 @@ def _neighbors(size,pt) :
     raise StopIteration
 
 def neighbors(pt):
+    '''Partial application of _neighbors(pt)'''
     global _boardsize
     return _neighbors(_boardsize,pt)
 
@@ -62,6 +67,7 @@ def is_valid(pt,size) :
 
 
 def count_alive_neighbors(pt) :
+    '''Returns number of live neighbors of a given point.  pt expected to be a 2-tuple.'''
     result=0
     for n in neighbors(pt) :
         if n in _board :
@@ -69,6 +75,7 @@ def count_alive_neighbors(pt) :
     return result
 
 def count_neigh_update_dead(dead_cands,pt) :
+    '''Returns # of live neighbors of a point.  Updates dead_cands so that it contains a list of dead points which may be alive in the next generation.'''
     alive_neighbors=0
     for n in neighbors(pt) :
         if n in _board :
@@ -78,6 +85,7 @@ def count_neigh_update_dead(dead_cands,pt) :
     return alive_neighbors
 
 def iterate(board) :
+    '''Worker function for updating board state.  Returns a new set.'''
     #TODO: Some magic numbers here
     newboard = deepcopy(board)
     dead_cands = set() #Candidate cells for reproduction
@@ -94,6 +102,7 @@ def iterate(board) :
 
 
 def advance() :
+    '''Advance the game state by one tick.'''
     global _board
     _board = iterate(_board)
 

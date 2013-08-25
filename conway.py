@@ -47,10 +47,11 @@ BUTTON_LIST = [ (' Start ',start_action),
               ]
 BUTTON_ACTIONS = {} #dict to lookup actions, filled from BUTTON_LIST
 BUTTONS_GRAPHICS = [] #[(name,surfaceobj,rectobj)] list of tuples filled in button_setup from BUTTON_LIST
-           #Used to hold buttons graphics data
 
 
 def button_setup() :
+    '''Fills BUTTON_ACTIONS dict and BUTTONS_GRAPHICS list from BUTTON_LIST :
+    Automatically spaces buttons based on BUTTONGAP and position of other buttons'''
     global BUTTONS_GRAPHICS,BUTTON_ACTIONS,BUTTON_LIST
     i=0
     lastwidth=0
@@ -69,6 +70,8 @@ def button_setup() :
 
 
 def draw_all(board) :
+    '''Draws all game elements: Currently user control buttons, game board.
+    Soon: Data like generation number and population'''
     global BUTTONS_GRAPHICS
     DISPLAYSURF.fill(BGCOLOR)
     draw_board(board)
@@ -106,6 +109,7 @@ def main():
 
 
 def dispatch_click(mousex,mousey) :
+    '''Handle click events'''
     (gridx,gridy) = get_box_at_pixel(mousex,mousey)
     if gridx !=None and gridy !=None :
         conway_backend.invert((gridx,gridy))
@@ -118,6 +122,7 @@ def dispatch_click(mousex,mousey) :
 
 
 def left_top_coords(gridx,gridy) :
+    '''Convert grid coordinates to pixel coordinates'''
     #Converts grid coordinates to pixel coordinates
     left = gridx * (BOXWIDTH+GAPSIZE) + XMARGIN
     top  = gridy * (BOXHEIGHT+GAPSIZE) + YMARGIN + CONTROLHEIGHT + GAPSIZE
@@ -125,6 +130,8 @@ def left_top_coords(gridx,gridy) :
 
 
 def get_button_at_pixel(x,y) :
+    '''Returns the element of BUTTONS_GRAPHICS that is at pixel coord (x,y)
+    or returns None'''
     global BUTTONS_GRAPHICS #list of (name,surfobj,rectobj) tuples
     for b in BUTTONS_GRAPHICS:
         button_rect = b[2]
@@ -133,6 +140,8 @@ def get_button_at_pixel(x,y) :
     return None
 
 def get_box_at_pixel(x,y) :
+    '''Returns the grid coordinates of the cell at pixel coordinates (x,y)'''
+    #TODO:Can probably improve this significantly, but profiling says we don't spend much time here
     for gridx in range(BOARDWIDTH) :
         for gridy in range(BOARDHEIGHT) :
             left,top = left_top_coords(gridx,gridy)
@@ -143,6 +152,7 @@ def get_box_at_pixel(x,y) :
 
 
 def draw_board(board) :
+    '''Expects a container of alive cells in board that supports "in"'''
     for gridx in range(BOARDWIDTH) :
         for gridy in range(BOARDHEIGHT) :
             (left,top) = left_top_coords(gridx,gridy)
