@@ -1,3 +1,4 @@
+#!/usr/bin/python2
 import pygame,sys
 import conway_backend
 from pygame.locals import *
@@ -21,6 +22,7 @@ ALIVECOLOR = (255,255,255) #white
 DEADCOLOR = (60,60,100) #navy
 BGCOLOR = (0,0,0) #black
 
+'''
 def debugprint():
     print "-- Backend --" 
     print "backend._boardsize",conway_backend._boardsize 
@@ -40,6 +42,7 @@ def debugprint():
     print "ALIVECOLOR:",ALIVECOLOR 
     print "DEADCOLOR:",DEADCOLOR 
     print "BGCOLOR:",BGCOLOR 
+'''
 
 
 def main():
@@ -49,9 +52,7 @@ def main():
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH,WINDOWHEIGHT))
     pygame.display.set_caption("Conway's Game of Life")
-    #DISPLAYSURF.fill(BGCOLOR)
-    #startGameAnimation(mainBoard)? TODO
-    debugprint()
+
     while True :
         DISPLAYSURF.fill(BGCOLOR) #Really need this again?
         conway_backend.advance()
