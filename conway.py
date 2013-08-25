@@ -39,19 +39,19 @@ def reset_action() :
     PAUSED = True
     conway_backend.clear_board()
 
-#Defined BUTTON_LIST so that UI would be presented predictably, instead of just using
-#BUTTON_ACTIONS dict
+'''Defined BUTTON_LIST so that UI would be presented predictably, instead of just using
+BUTTON_ACTIONS dict'''
 BUTTON_LIST = [ (' Start ',start_action),
                 (' Stop ',stop_action),
                 (' Reset ',reset_action)
               ]
 BUTTON_ACTIONS = {} #dict to lookup actions, filled from BUTTON_LIST
-BUTTONS=[] #[(name,surfaceobj,rectobj)] list of tuples filled in button_setup from BUTTON_LIST
+BUTTONS_GRAPHICS = [] #[(name,surfaceobj,rectobj)] list of tuples filled in button_setup from BUTTON_LIST
            #Used to hold buttons graphics data
 
 
 def button_setup() :
-    global BUTTONS,BUTTON_ACTIONS,BUTTON_LIST
+    global BUTTONS_GRAPHICS,BUTTON_ACTIONS,BUTTON_LIST
     i=0
     lastwidth=0
     startx = left_top_coords(0,0)[0] #only left coords
@@ -64,15 +64,15 @@ def button_setup() :
         Rect.topleft = (startx + lastwidth + i*BUTTONGAP,YMARGIN)
         i += 1
         lastwidth += Rect.width
-        BUTTONS.append((name,txtSurf,Rect))
+        BUTTONS_GRAPHICS.append((name,txtSurf,Rect))
         BUTTON_ACTIONS[name] = action
 
 
 def draw_all(board) :
-    global BUTTONS
+    global BUTTONS_GRAPHICS
     DISPLAYSURF.fill(BGCOLOR)
     draw_board(board)
-    for b in BUTTONS:
+    for b in BUTTONS_GRAPHICS:
         DISPLAYSURF.blit(b[1],b[2]) #b[1]: surface obj, b[2]: rect obj
     pygame.display.update()
 
@@ -125,8 +125,8 @@ def left_top_coords(gridx,gridy) :
 
 
 def get_button_at_pixel(x,y) :
-    global BUTTONS #list of (name,surfobj,rectobj) tuples
-    for b in BUTTONS:
+    global BUTTONS_GRAPHICS #list of (name,surfobj,rectobj) tuples
+    for b in BUTTONS_GRAPHICS:
         button_rect = b[2]
         if button_rect.collidepoint(x,y) :
             return b
