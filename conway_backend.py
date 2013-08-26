@@ -106,3 +106,5 @@ def advance() :
     global _board
     _board = iterate(_board)
 
+def population() :
+    return len(_board)

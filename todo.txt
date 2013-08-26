@@ -1,15 +1,13 @@
 UI Improvements
 ---
-Add a monitoring panel for generation number, paused/running, population info
-Consider dynamic block sizing, fullscreen options
+Consider dynamic grid sizing, fullscreen options
 
 New Functionality
 ----
 Allow user to adjust FPS
 Abstract rules list to allow for different rules sets
 Add argv parsing for parameters
-Allow user to zoom
-Allow user to resize on the fly
+Allow user to zoom / resize on the fly
 Allow user to select from predefined library of start conditions
 
 

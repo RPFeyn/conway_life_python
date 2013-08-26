@@ -6,7 +6,7 @@ from pygame.locals import*
 GRIDSIZE = 60
 
 FPS = 15
-WINDOWWIDTH=1400
+WINDOWWIDTH=1000
 WINDOWHEIGHT=840
 GAPSIZE = 1
 BOARDWIDTH = GRIDSIZE
@@ -22,6 +22,8 @@ YMARGIN = (WINDOWHEIGHT - CONTROLHEIGHT - BOXHEIGHT*BOARDHEIGHT - (GAPSIZE * (BO
 ALIVECOLOR = (255,255,255) #white
 DEADCOLOR = (60,60,100) #navy
 BGCOLOR = (0,0,0) #black
+FONTNAME = 'freesansbold.ttf'
+FONTSIZE = 18
 
 PAUSED = True
 
@@ -49,6 +51,27 @@ BUTTON_ACTIONS = {} #dict to lookup actions, filled from BUTTON_LIST
 BUTTONS_GRAPHICS = [] #[(name,surfaceobj,rectobj)] list of tuples filled in button_setup from BUTTON_LIST
 
 
+def draw_buttons() :
+    '''Simply displays buttons.'''
+    for b in BUTTONS_GRAPHICS:
+        DISPLAYSURF.blit(b[1],b[2]) #b[1]: surface obj, b[2]: rect obj
+
+
+def draw_info(population,generation) :
+    '''Draws info blobs.  TODO: modify for extensibility'''
+    fontobj = pygame.font.Font(FONTNAME,FONTSIZE)
+    popsurf = fontobj.render('Population: %s' % (population), True, ALIVECOLOR,DEADCOLOR)
+    poprect = popsurf.get_rect()
+    poprect.topright = (WINDOWWIDTH - XMARGIN, YMARGIN)
+
+    gensurf = fontobj.render('Generation: %s' % (generation), True, ALIVECOLOR,DEADCOLOR)
+    genrect = gensurf.get_rect()
+    genrect.topright = (poprect.left - BUTTONGAP, YMARGIN)
+
+    DISPLAYSURF.blit(popsurf,poprect)
+    DISPLAYSURF.blit(gensurf,genrect)
+
+
 def button_setup() :
     '''Fills BUTTON_ACTIONS dict and BUTTONS_GRAPHICS list from BUTTON_LIST :
     Automatically spaces buttons based on BUTTONGAP and position of other buttons'''
@@ -56,11 +79,11 @@ def button_setup() :
     i=0
     lastwidth=0
     startx = left_top_coords(0,0)[0] #only left coords
-    fontObj = pygame.font.Font('freesansbold.ttf',18)
     for n in BUTTON_LIST:
         name=n[0]
         action=n[1]
-        txtSurf = fontObj.render(name,True,ALIVECOLOR,DEADCOLOR)
+        fontobj = pygame.font.Font(FONTNAME,FONTSIZE)
+        txtSurf = fontobj.render(name,True,ALIVECOLOR,DEADCOLOR)
         Rect = txtSurf.get_rect()
         Rect.topleft = (startx + lastwidth + i*BUTTONGAP,YMARGIN)
         i += 1
@@ -69,20 +92,19 @@ def button_setup() :
         BUTTON_ACTIONS[name] = action
 
 
-def draw_all(board) :
+def draw_all(board,population,generation) :
     '''Draws all game elements: Currently user control buttons, game board.
     Soon: Data like generation number and population'''
-    global BUTTONS_GRAPHICS
     DISPLAYSURF.fill(BGCOLOR)
     draw_board(board)
-    for b in BUTTONS_GRAPHICS:
-        DISPLAYSURF.blit(b[1],b[2]) #b[1]: surface obj, b[2]: rect obj
+    draw_buttons()
+    draw_info(population,generation)
     pygame.display.update()
 
 
 def main():
     #init pygame
-    global FPSCLOCK, DISPLAYSURF, PAUSED
+    global FPSCLOCK, DISPLAYSURF, PAUSED 
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH,WINDOWHEIGHT))
@@ -90,14 +112,19 @@ def main():
     button_setup()
     (mousex,mousey) = (0,0)
     conway_backend.gameinit(GRIDSIZE)
+    population = 0 
+    generation = 0
+    FONT = pygame.font.Font('freesansbold.ttf',18)
 
     while True :
+        population = conway_backend.population()
         if not PAUSED :
             conway_backend.advance()
+            generation += 1
             if conway_backend.is_empty() :
                 PAUSED = True
         FPSCLOCK.tick(FPS)
-        draw_all(conway_backend._board)
+        draw_all(conway_backend._board,population,generation)
         #Event handler
         for event in pygame.event.get() :
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
