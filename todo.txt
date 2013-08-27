@@ -34,6 +34,8 @@ Long Term
     Add argv parsing for parameters
     Allow user to select from predefined library of start conditions
     Abstract rules list to allow for different rules sets
+    Allow user to view a generation history in some sane way -- or perhaps
+just give the user some way to advance one generation at a time
 
     Code style
     -----
