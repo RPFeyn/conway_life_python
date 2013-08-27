@@ -1,30 +1,44 @@
-UI Improvements
----
-Consider dynamic grid sizing, fullscreen options
+Short term
+--------------
+    UI Improvements
+    ---
+    Consider dynamic grid sizing, fullscreen options
 
-New Functionality
-----
-Allow user to adjust FPS
-Abstract rules list to allow for different rules sets
-Add argv parsing for parameters
-Allow user to zoom / resize on the fly
-Allow user to select from predefined library of start conditions
-
-
-Code style/encapsulation
-----
-Add sanity checks to board dimensions
-kill globals
-Re-examine button listing scheme
+    New Functionality
+    ----
+    Allow user to adjust FPS
+    Allow user to zoom / resize on the fly
 
 
-Performance/Optimizations
-----
-Do some profiling, especially on backend
+    Code style/encapsulation
+    ----
+    Add sanity checks to board dimensions
+    kill globals
 
 
-Documentation
-----
-readme: write it up, include prereqs
-docstrings: all of them.
+    Performance/Optimizations
+    ----
 
+    Documentation
+    ----
+    readme: write it up, include prereqs
+
+
+Long Term
+---------
+    UI
+    ---
+
+    Functionality
+    _____
+    Add argv parsing for parameters
+    Allow user to select from predefined library of start conditions
+    Abstract rules list to allow for different rules sets
+
+    Code style
+    -----
+    Re-examine button data scheme
+
+    Performance/Optimizations
+    -------
+    Check out hashlife algorithm (quadtrees, memoization, etc)
