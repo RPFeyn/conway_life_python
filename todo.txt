@@ -1,5 +1,8 @@
 Short term
 --------------
+    Deal with exception handling.  Atthe moment, conway_backend.py can throw.
+    I'd prefer it to be exception free.
+
     UI Improvements
     ---
     Consider dynamic grid sizing, fullscreen options
