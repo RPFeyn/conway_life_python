@@ -1,4 +1,5 @@
 from copy import deepcopy
+import warnings
 #Points denoted by tuples, board represented by a set
 
 class lifeboard(object) :
@@ -54,8 +55,9 @@ class lifeboard(object) :
         if self._is_valid_point(pt) :
             self._board.add(pt)
         else :
-            raise IndexError('Bad pt passed to lifeboard.add(self,pt)') #Do I really want to throw an exception ehre? Probably not but it's there for a default TODO
-
+            pt = self._convert_to_valid(pt)
+            warnings.warn("Warning: lifeboard.add(self,pt) called with invalid point, converted to valid coords")
+            
 
     def remove(self,pt) :
         '''Removes a live point from the board. pt expected to be represented as a 2-tuple'''
@@ -81,7 +83,9 @@ class lifeboard(object) :
         '''Kills a cell if it is alive, or adds a cell to the live list if it's dead.
         Intended for handling user clicks.'''
         if not self._is_valid_point(pt) :
-            raise IndexError('Bad point used in invert(pt)')
+            pt = self._convert_to_valid(pt)
+            warnings.warn("Warning: lifeboard.invert(self,pt) called with bad point, converted to valid coords")
+
         if pt in self._board :
             self._board.remove(pt)
         else :
@@ -105,6 +109,12 @@ class lifeboard(object) :
 
     def _is_valid_point(self,pt) :
         return pt[0] >=0 and pt[0] < self._size and pt[1] >=0 and pt[1] < self._size
+
+    def _convert_to_valid(self,pt) :
+        newpt = pt
+        for xi in newpt :
+            xi %= self._size
+        return newpt
 
 
     def _count_alive_neighbors(self,pt) :
