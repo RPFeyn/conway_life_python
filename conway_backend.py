@@ -6,6 +6,28 @@ class lifeboard(object) :
         '''Simple size setter: May be changed to initialize starting live cells'''
         self._size=sz
         self._board=set()
+        self._generation = 0
+
+
+    def get_size(self) :
+        return self._size
+
+    '''For now, only square boards with toroidal boundary conditions are supported'''
+    def get_width(self) : 
+        return self._size
+
+
+    def get_height(self): 
+        return self._size
+
+
+    def get_generation(self) :
+        return self._generation
+
+
+    def alive_cells(self) :
+        '''Returns set of alive cells.'''
+        return self._board
 
 
     def iterate(self) :
@@ -20,10 +42,11 @@ class lifeboard(object) :
                 newboard.remove(alivept)
 
         for deadpt in dead_cands : #TODO: Find pythonic way of expressing this
-            if count_alive_neighbors(deadpt) == 3 :
+            if self._count_alive_neighbors(deadpt) == 3 :
                 newboard.add(deadpt)
 
         self._board=newboard
+        self._generation += 1
 
 
     def add(self,pt) :
@@ -39,7 +62,7 @@ class lifeboard(object) :
         self._board.discard(pt)
 
 
-    def population(self) :
+    def get_population(self) :
         return len(self._board)
 
 
@@ -51,6 +74,7 @@ class lifeboard(object) :
 
     def clear_board(self) :
         self._board.clear()
+        self._generation = 0
 
 
     def invert(self,pt):
@@ -78,10 +102,6 @@ class lifeboard(object) :
         yield ((pt[0]-1) % self._size, (pt[1]+1) % self._size)
         raise StopIteration
 
-    def _neighbors(self,pt):
-        '''Partial application of _neighbors(pt)'''
-        return _neighbors(self,pt)
-
 
     def _is_valid_point(self,pt) :
         return pt[0] >=0 and pt[0] < self._size and pt[1] >=0 and pt[1] < self._size
@@ -90,7 +110,7 @@ class lifeboard(object) :
     def _count_alive_neighbors(self,pt) :
         '''Returns number of live neighbors of a given point.  pt expected to be a 2-tuple.'''
         result=0
-        for n in self.neighbors(pt) :
+        for n in self._neighbors(pt) :
             if n in self._board :
                 result += 1
         return result
@@ -98,7 +118,7 @@ class lifeboard(object) :
     def _count_neigh_update_dead(self,dead_cands,pt) :
         '''Returns # of live neighbors of a point.  Updates dead_cands so that it contains a list of dead points which may be alive in the next generation.'''
         alive_neighbors=0
-        for n in self.neighbors(pt) :
+        for n in self._neighbors(pt) :
             if n in self._board :
                 alive_neighbors += 1
             else :
