@@ -3,7 +3,7 @@ import warnings
 #Points denoted by tuples, board represented by a set
 
 class lifeboard(object) :
-    def __init__(self,sz = 0) :
+    def __init__(self,sz = 10) :
         '''Simple size setter: May be changed to initialize starting live cells'''
         self._size=sz
         self._board=set()
