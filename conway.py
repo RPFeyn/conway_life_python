@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/env python
 import pygame,sys
 import conway_backend
 from pygame.locals import*
@@ -171,25 +171,26 @@ def button_setup() :
 
 
 def start_action(board) :
-    '''Function called on start button click'''
+    '''Unpauses the action'''
     global PAUSED
     PAUSED = False
 
 
 def pause_action(board) :
-    '''Function called on stop button click'''
+    '''Pauses game'''
     global PAUSED
     PAUSED = True
 
 
 def reset_action(board) :
-    '''Function called on reset button click'''
+    '''Pauses game, resets all parameters (all live cells killed, # generations -> 0'''
     global PAUSED
     PAUSED = True
     board.clear_board()
 
 
 def quit_action(board) :
+    '''Quits!'''
     sys.exit()
 
 '''Defined BUTTON_LIST so that UI would be presented predictably, instead of just using
