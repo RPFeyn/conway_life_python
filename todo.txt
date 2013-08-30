@@ -3,6 +3,7 @@ Short term
     UI Improvements
     ---
     Consider dynamic grid sizing, fullscreen options
+    Change pause button to Play/Pause toggle?
 
     New Functionality
     ----
@@ -10,8 +11,9 @@ Short term
     Allow user to zoom / resize on the fly
 
 
-    Code style/encapsulation
+    Code style / factoring
     ----
+    Examine button setup.  Refactor buttons into separate class (/module?)
     Add sanity checks to board dimensions
     kill globals
 
@@ -21,7 +23,6 @@ Short term
 
     Documentation
     ----
-    readme: write it up, include prereqs
 
 
 Long Term
